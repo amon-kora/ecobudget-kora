@@ -24,7 +24,7 @@ import com.example.model.YearMonth
  */
 @Immutable
 data class EcoBudgetUiState(
-    val currentMonth: YearMonth = YearMonth.Companion.current(),
+    val currentMonth: YearMonth = YearMonth.current(),
     val filteredTransactions: List<Transaction> = emptyList(),
     val monthTransactions: List<Transaction> = emptyList(),
     val allTransactions: List<Transaction> = emptyList(),

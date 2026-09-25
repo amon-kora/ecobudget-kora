@@ -3,14 +3,16 @@ plugins {
     id("com.android.library")
     alias(libs.plugins.kotlin.compose.compiler)
     alias(libs.plugins.jetbrains.compose)
-    kotlin("plugin.serialization") version "2.0.20"
+    kotlin("plugin.serialization") version "2.0.21"
 
 }
 
 kotlin {
     // Cible Android
     androidTarget {
-        compilations.all { kotlinOptions.jvmTarget = "17" }
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+        }
     }
 
     // Cibles iOS avec génération du framework binaire
@@ -28,7 +30,7 @@ kotlin {
     // Dépendances communes
     sourceSets {
         commonMain.dependencies {
-            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
             implementation("org.jetbrains.androidx.lifecycle:lifecycle-viewmodel:2.8.0")
             api(compose.components.resources)
             implementation(compose.runtime)
