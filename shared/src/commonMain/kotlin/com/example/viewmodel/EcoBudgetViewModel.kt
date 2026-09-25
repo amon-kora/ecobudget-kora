@@ -258,7 +258,8 @@ class EcoBudgetViewModel(
     }
 
     /**
-     * Enregistre ou met à jour une dépense selon le contexte d'édition.
+     * Enregistre ou met à jour une dépense selon le contexte d'édition,
+     * puis recharge la liste pour rafraîchir l'écran.
      */
     fun saveTransaction(title: String, amount: Double, category: Category) {
         if (title.isBlank() || amount <= 0.0) return
@@ -266,50 +267,69 @@ class EcoBudgetViewModel(
         val currentEditing = _editingTransaction.value
 
         viewModelScope.launch {
-            if (currentEditing != null) {
-                // Modification d'une transaction existante
-                val updated = currentEditing.copy(
-                    title = title.trim(),
-                    amount = amount,
-                    category = category
-                )
-                repository.updateTransaction(updated)
-            } else {
-                // Création d'une nouvelle transaction dans le mois affiché
-                val currentYearMonth = _currentMonth.value
-                val dateToUse = if (currentYearMonth == YearMonth.Companion.current()) {
-                    getCurrentTimeMillis()
+            try {
+                if (currentEditing != null) {
+                    // Modification d'une transaction existante
+                    val updated = currentEditing.copy(
+                        title = title.trim(),
+                        amount = amount,
+                        category = category
+                    )
+                    repository.updateTransaction(updated)
                 } else {
-                    LocalDateTime(
-                        year = currentYearMonth.year,
-                        monthNumber = currentYearMonth.month,
-                        dayOfMonth = 15,
-                        hour = 12,
-                        minute = 0,
-                        second = 0,
-                        nanosecond = 0
-                    ).toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
+                    // Création d'une nouvelle transaction dans le mois affiché
+                    val currentYearMonth = _currentMonth.value
+                    val dateToUse = if (currentYearMonth == YearMonth.Companion.current()) {
+                        getCurrentTimeMillis()
+                    } else {
+                        LocalDateTime(
+                            year = currentYearMonth.year,
+                            monthNumber = currentYearMonth.month,
+                            dayOfMonth = 15,
+                            hour = 12,
+                            minute = 0,
+                            second = 0,
+                            nanosecond = 0
+                        ).toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
+                    }
+
+                    val newTransaction = Transaction(
+                        id = generateUUID(),
+                        title = title.trim(),
+                        amount = amount,
+                        date = dateToUse,
+                        category = category
+                    )
+                    repository.addTransaction(newTransaction)
                 }
 
-                val newTransaction = Transaction(
-                    id = generateUUID(),
-                    title = title.trim(),
-                    amount = amount,
-                    date = dateToUse,
-                    category = category
-                )
-                repository.addTransaction(newTransaction)
+                // Rafraîchissement : on recharge la liste depuis le dépôt
+                _transactions.value = repository.getTransactions()
+                _errorMessage.value = null
+            } catch (e: Exception) {
+                e.printStackTrace()
+                _errorMessage.value = "${e::class.simpleName} : ${e.message}"
+            } finally {
+                dismissDialog()
             }
-            dismissDialog()
         }
     }
 
     /**
-     * Supprime une dépense par son identifiant unique.
+     * Supprime une dépense par son identifiant unique,
+     * puis recharge la liste pour rafraîchir l'écran.
      */
     fun deleteTransaction(id: String) {
         viewModelScope.launch {
-            repository.deleteTransaction(id)
+            try {
+                repository.deleteTransaction(id)
+                // Rafraîchissement : on recharge la liste depuis le dépôt
+                _transactions.value = repository.getTransactions()
+                _errorMessage.value = null
+            } catch (e: Exception) {
+                e.printStackTrace()
+                _errorMessage.value = "${e::class.simpleName} : ${e.message}"
+            }
         }
     }
 }
