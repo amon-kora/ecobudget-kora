@@ -30,7 +30,7 @@ kotlin {
     // Dépendances communes
     sourceSets {
         commonMain.dependencies {
-            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
             implementation("org.jetbrains.androidx.lifecycle:lifecycle-viewmodel:2.8.0")
             api(compose.components.resources)
             implementation(compose.runtime)
