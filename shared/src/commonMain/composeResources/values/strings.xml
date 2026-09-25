@@ -11,26 +11,26 @@
     <!-- Carte Budget Hero -->
     <string name="budget_remaining_title">BUDGET RESTANT DISPONIBLE</string>
     <string name="currency_fcfa">FCFA</string>
-    <string name="total_spent_format">Total dépensé : %s FCFA</string>
-    <string name="budget_usage_percent_format">%d%% consommé</string>
+    <string name="total_spent_format">Total dépensé : %1$s FCFA</string>
+    <string name="budget_usage_percent_format">%1$d% consommé</string>
 
     <!-- Filtres & Catégories -->
     <string name="filter_all">Tous</string>
     <string name="all_categories_summary">✨ Toutes les catégories</string>
     <string name="multiple_categories_selected_format">%1$s %2$d catégories sélectionnées</string>
     <string name="expense_count_month_format">%1$d dépense(s) en %2$s</string>
-    <string name="transactions_detail_title_format">Détail des dépenses (%s)</string>
+    <string name="transactions_detail_title_format">Détail des dépenses (%1$s)</string>
     <string name="content_desc_selected">Sélectionné</string>
 
     <!-- État vide -->
-    <string name="empty_expenses_month_format">Aucune dépense en %s</string>
-    <string name="empty_expenses_filtered_format">Aucune dépense dans les catégories sélectionnées pour %s</string>
-    <string name="empty_expenses_hint">Cliquez sur \'+\' pour ajouter une dépense pour ce mois</string>
+    <string name="empty_expenses_month_format">Aucune dépense en %1$s</string>
+    <string name="empty_expenses_filtered_format">Aucune dépense dans les catégories sélectionnées pour %1$s</string>
+    <string name="empty_expenses_hint">Cliquez sur '+' pour ajouter une dépense pour ce mois</string>
 
     <!-- Carte de transaction & Actions -->
     <string name="content_desc_edit">Modifier</string>
-    <string name="content_desc_delete_format">Supprimer la transaction %s</string>
-    <string name="date_today">Aujourd\'hui</string>
+    <string name="content_desc_delete_format">Supprimer la transaction %1$s</string>
+    <string name="date_today">Aujourd'hui</string>
     <string name="date_yesterday">Hier</string>
 
     <!-- Dialogue d'ajout / modification -->
