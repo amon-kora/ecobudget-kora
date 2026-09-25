@@ -1,5 +1,6 @@
 package com.example.di
 
+import com.example.data.repository.FakeTransactionRepository
 import com.example.data.repository.NetworkTransactionRepository
 import com.example.data.repository.TransactionRepository
 import io.ktor.client.HttpClient
@@ -9,12 +10,19 @@ import kotlinx.serialization.json.Json
 
 object AppModule {
     private const val STUDENT_ID = "test02"
-    private val httpClient = HttpClient {
-        install(ContentNegotiation) {
-            json(Json { ignoreUnknownKeys = true })
+
+    private const val USE_FAKE_DATA = true
+
+    private val httpClient by lazy {
+        HttpClient {
+            install(ContentNegotiation) {
+                json(Json { ignoreUnknownKeys = true })
+            }
         }
     }
+
     val transactionRepository: TransactionRepository by lazy {
-        NetworkTransactionRepository(httpClient, STUDENT_ID)
+        if (USE_FAKE_DATA) FakeTransactionRepository()
+        else NetworkTransactionRepository(httpClient, STUDENT_ID)
     }
 }
